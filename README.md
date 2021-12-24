@@ -1,52 +1,49 @@
+﻿
+# Hashx Comment read Microservice
+Microservice to implement Comment Read operations.
 
-# Hashx Follow CUD Microservice
+Run using -
 
-Microservice to implement Follow Table Create Update and Delete operations.
+npm install
 
-Run using - 
-npm install 
-npm start 
-(OR)
-node index.js
+npm start (OR) node index.js
+
+# Change Guide
+Make changes
+
+git add .
+
+git commit -m "Message"
+
+git push hashx 
 
 # Routes
 
-## /createFollow
+## /getAllComments
 
-Creates a new Follow : 
-
+Gets all the Comments given the ItemUUID: 
 Request Body - 
- - req.body.Follower : IdentityUUID of Follower
- - req.body.Following : IdentityUUID of Following
+ - req.body.ItemUUID - ItemUUID  of the Post,Asset,Buncle etc
 
-
-
- *Optional Arguments 
  
-Response Body -
-- res.data.Following
-
-Query : Insert into "Follow" ("Follower","Following") 
-
-
-
-
-## /deleteFollow
-
-Deletes Follow row : 
-Request Body - 
- - req.body.Follower : IdentityUUID of Follower
- - req.body.Following : IdentityUUID of Following
-
  Response Body -
-- res.data.Follower
-- res.data.Following
+ res.body.data  = Mapping of the Comments and Replies
 
+Query -
+select * from "Comment" where "ItemUUID"= $1 ORDER BY "Upvotes" DESC LIMIT 10 OFFSET $2
 
-Query : delete from "Follow" where "Follower"= $1 AND "Following"=$2
+## /getComment
 
+Gets the comment given the CommentUUID.
+Request Body -
+    
+ req.body.CommentUUID -  Gets the comment given the CommentUUID . 
 
+ Response Body - 
+ - res.body.data  = [Comment data] array
 
+Query -
+select * from "Comment" where "CommentUUID" = $1 
 # Response Format
 
 [err,data,msg]
@@ -54,9 +51,3 @@ Query : delete from "Follow" where "Follower"= $1 AND "Following"=$2
  - err : Error message from SQL try block
  - data : Data returned by SQL query
  - msg : Custom message defined in API
-
-
-
-
-
-
